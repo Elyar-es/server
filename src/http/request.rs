@@ -8,10 +8,10 @@ use std::fmt::Formatter;
 use std::str;
 use std::str::Utf8Error;
 
-pub struct Request {
+pub struct Request<'a> {
 
-    path: String,
-    query_string: Option<String>,
+    path: &'a str,
+    query_string: Option<&'a str>,
     method: Method,
 
 }
@@ -20,10 +20,10 @@ pub struct Request {
 //     fn from_byte_array(buf: &[u8]) -> Result<Self, String> {}
 // }
 
-impl TryFrom<&[u8]> for Request {
+impl<'a> TryFrom<&'a [u8]> for Request<'a> {
     type Error = ParseError;
 
-    fn try_from(buf: &[u8]) -> Result<Self, Self::Error> {
+    fn try_from(buf: &'a [u8]) -> Result<Self, Self::Error> {
 
         // match str::from_utf8(buf) {
         //     Ok(request) => {},
@@ -54,10 +54,14 @@ impl TryFrom<&[u8]> for Request {
 
         if let Some(i) = path.find('?') {
             query_string = Some(&path[i+1..]);
-            path = &path[..i];
+            path =&path[..i];
         }
         
-        unimplemented!()
+        Ok(Self {
+            path,
+            query_string,
+            method,
+        })  
 
     }
 }

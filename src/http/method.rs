@@ -38,6 +38,4 @@ impl FromStr for Method {
 
 }
 
-pub struct MethodError {
-
-}
+pub struct MethodError;
