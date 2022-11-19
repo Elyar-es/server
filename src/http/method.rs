@@ -1,6 +1,7 @@
 use core::str;
 use std::str::FromStr;
 
+#[derive(Debug)]
 pub enum Method {
 
     GET,
